@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css'; // Import CSS file for styling
 
 function App() {
   // State for storing fetched posts and error message
@@ -18,7 +19,7 @@ function App() {
       // Check if response is OK
       if (!response.ok) {
         // If response is not OK, throw an error
-        throw new Error('Failed to fetch posts');
+        throw new Error('Data fetching failed.');
       }
       // Parse response as JSON
       const data = await response.json();
@@ -33,21 +34,23 @@ function App() {
   return (
     <div className="App">
       {/* Header */}
-      <h1>Blog Posts</h1>
+      <h1>Posts</h1>
       {/* Conditional rendering based on error state */}
-      {error ? ( // If error state is not null, display error message
-        <div className="error">{error}</div>
-      ) : ( // Otherwise, render list of posts
-        <ul>
-          {/* Map through fetched posts and render each post */}
-          {posts.map(post => (
-            <li key={post.id}>
-              <h2>{post.title}</h2>
-              <p>{post.body}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="content-container">
+        {error ? ( // If error state is not null, display error message
+          <div className="error">{error}</div>
+        ) : ( // Otherwise, render list of posts
+          <ol className="post-list">
+            {/* Map through fetched posts and render each post */}
+            {posts.map((post, index) => (
+              <li key={post.id}>
+                <h2>{index + 1}. {post.title}</h2>
+                <p>{post.body}</p>
+              </li>
+            ))}
+          </ol>
+        )}
+      </div>
     </div>
   );
 }
